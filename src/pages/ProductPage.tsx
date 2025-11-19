@@ -4,7 +4,20 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchProducts } from "../redux/reducers/actions/productActions.ts";
 
-function ProductPage({ loading, error, products, fetchProducts }) {
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+
+type Props = {
+  loading: boolean;
+  error: string | null;
+  products: Product[];
+  fetchProducts: () => void;
+};
+
+function ProductPage({ loading, error, products, fetchProducts }: Props) {
   useEffect(() => {
     fetchProducts(); // same as componentDidMount
   }, [fetchProducts]);

@@ -17,10 +17,11 @@ type ProductAction =
   | { type: "FETCH_PRODUCTS_SUCCESS"; products: Product[] }
   | { type: "FETCH_PRODUCTS_FAILURE"; error: string };
 
-const initialState: ProductState = {
+const initialState = {
   loading: false,
   error: null,
-  data: [],
+  data: [], // list of products
+  selected: null, // <-- add this for product details
 };
 
 const productReducer = (
@@ -48,6 +49,15 @@ const productReducer = (
         loading: false,
         error: action.error,
       };
+
+    case "FETCH_PRODUCT_BY_ID_REQUEST":
+      return { ...state, loading: true, error: null };
+
+    case "FETCH_PRODUCT_BY_ID_SUCCESS":
+      return { ...state, loading: false, selected: action.payload };
+
+    case "FETCH_PRODUCT_BY_ID_FAILURE":
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return state;
