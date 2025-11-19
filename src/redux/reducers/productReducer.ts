@@ -1,27 +1,31 @@
 // redux/reducers/productReducer.ts
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   price: number;
 };
 
-type ProductState = {
+export type ProductState = {
   loading: boolean;
   error: string | null;
   data: Product[];
+  selected: Product | null;
 };
 
-type ProductAction =
+export type ProductAction =
   | { type: "FETCH_PRODUCTS_REQUEST" }
-  | { type: "FETCH_PRODUCTS_SUCCESS"; products: Product[] }
-  | { type: "FETCH_PRODUCTS_FAILURE"; error: string };
+  | { type: "FETCH_PRODUCTS_SUCCESS"; payload: Product[] }
+  | { type: "FETCH_PRODUCTS_FAILURE"; payload: string }
+  | { type: "FETCH_PRODUCT_BY_ID_REQUEST" }
+  | { type: "FETCH_PRODUCT_BY_ID_SUCCESS"; payload: Product }
+  | { type: "FETCH_PRODUCT_BY_ID_FAILURE"; payload: string };
 
-const initialState = {
+const initialState: ProductState = {
   loading: false,
   error: null,
-  data: [], // list of products
-  selected: null, // <-- add this for product details
+  data: [],
+  selected: null,
 };
 
 const productReducer = (
@@ -30,25 +34,13 @@ const productReducer = (
 ): ProductState => {
   switch (action.type) {
     case "FETCH_PRODUCTS_REQUEST":
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
+      return { ...state, loading: true, error: null };
 
     case "FETCH_PRODUCTS_SUCCESS":
-      return {
-        loading: false,
-        error: null,
-        data: action.products,
-      };
+      return { ...state, loading: false, data: action.payload };
 
     case "FETCH_PRODUCTS_FAILURE":
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      };
+      return { ...state, loading: false, error: action.payload };
 
     case "FETCH_PRODUCT_BY_ID_REQUEST":
       return { ...state, loading: true, error: null };

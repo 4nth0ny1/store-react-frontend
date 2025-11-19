@@ -1,5 +1,7 @@
 // redux/reducers/actions/productActions.ts
 
+import type { Product } from "../productReducer";
+
 export const fetchProducts = () => {
   return async (dispatch: (action: any) => void) => {
     dispatch({ type: "FETCH_PRODUCTS_REQUEST" });
@@ -11,11 +13,11 @@ export const fetchProducts = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const products = await response.json();
+      const products: Product[] = await response.json();
 
       dispatch({
         type: "FETCH_PRODUCTS_SUCCESS",
-        products: products,
+        payload: products,
       });
     } catch (err: unknown) {
       const message =
@@ -23,13 +25,13 @@ export const fetchProducts = () => {
 
       dispatch({
         type: "FETCH_PRODUCTS_FAILURE",
-        error: message,
+        payload: message,
       });
     }
   };
 };
 
-export const fetchProductById = (id) => {
+export const fetchProductById = (id: string | number) => {
   return async (dispatch: (action: any) => void) => {
     dispatch({ type: "FETCH_PRODUCT_BY_ID_REQUEST" });
 
@@ -40,11 +42,11 @@ export const fetchProductById = (id) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const product = await response.json();
+      const product: Product = await response.json();
 
       dispatch({
         type: "FETCH_PRODUCT_BY_ID_SUCCESS",
-        payload: product, // <-- FIX
+        payload: product,
       });
     } catch (err: unknown) {
       const message =
@@ -52,7 +54,7 @@ export const fetchProductById = (id) => {
 
       dispatch({
         type: "FETCH_PRODUCT_BY_ID_FAILURE",
-        payload: message, // <-- FIX
+        payload: message,
       });
     }
   };
