@@ -1,48 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-};
+import { connect } from "react-redux";
+import { fetchProducts } from "../redux/reducers/actions/productActions.ts";
 
-export default function ProductPage() {
-  const [data, setData] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
+function ProductPage({ loading, error, products, fetchProducts }) {
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/products");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    fetchProducts(); // same as componentDidMount
+  }, [fetchProducts]);
 
-        const result: Product[] = await response.json();
-        setData(result);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err);
-        } else {
-          setError(new Error("Unknown error"));
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <div>Loading data...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  if (loading) return <div>Loading data...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <>
@@ -57,7 +25,7 @@ export default function ProductPage() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {products.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>
@@ -71,3 +39,15 @@ export default function ProductPage() {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  loading: state.products.loading,
+  error: state.products.error,
+  products: state.products.data,
+});
+
+const mapDispatchToProps = {
+  fetchProducts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);
