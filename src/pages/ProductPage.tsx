@@ -45,6 +45,14 @@ function ProductPage({ loading, error, products, fetchProducts }: Props) {
                 <Link to={`/products/${item.id}`}>{item.name}</Link>
               </td>
               <td>{item.price}</td>
+              <td>
+                <button
+                  type="button"
+                  className="text-white bg-blue-600 box-border border p-2"
+                >
+                  Add to Inventory
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
