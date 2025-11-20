@@ -46,11 +46,8 @@ function ProductPage({ loading, error, products, fetchProducts }: Props) {
               </td>
               <td>{item.price}</td>
               <td>
-                <button
-                  type="button"
-                  className="text-white bg-blue-600 box-border border p-2"
-                >
-                  Add to Inventory
+                <button className="bg-[var(--primary)] text-white px-4 py-2 rounded-2xl">
+                  Add to Inventory{" "}
                 </button>
               </td>
             </tr>
