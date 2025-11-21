@@ -6,6 +6,7 @@ import StoresPage from "./pages/StoresPage.tsx";
 import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
 import ProductDetailsPage from "./pages/ProductDetailsPage.tsx";
+import InventoryPage from "./pages/InventoryPage.tsx";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/products" element={<ProductPage />} />
         <Route path="/products/:id" element={<ProductDetailsPage />} />
         <Route path="/stores" element={<StoresPage />} />
+        <Route path="/inventory/store/:id" element={<InventoryPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         {/* Add a catch-all route for 404 pages */}

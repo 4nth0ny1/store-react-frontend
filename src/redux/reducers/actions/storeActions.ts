@@ -1,29 +1,23 @@
-import type { Store } from "../storeReducer";
-
 export const fetchStores = () => {
-  return async (dispatch: (action: any) => void) => {
+  return async (dispatch: any) => {
     dispatch({ type: "FETCH_STORES_REQUEST" });
 
     try {
-      const response = await fetch("http://localhost:8080/api/stores");
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const res = await fetch("http://localhost:8080/api/stores");
+      if (!res.ok) {
+        throw new Error(`HTTP error: ${res.status}`);
       }
 
-      const stores: Store[] = await response.json();
+      const data = await res.json();
 
       dispatch({
         type: "FETCH_STORES_SUCCESS",
-        payload: stores,
+        stores: data,
       });
-    } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Unknown error fetching stores";
-
+    } catch (err: any) {
       dispatch({
         type: "FETCH_STORES_FAILURE",
-        payload: message,
+        error: err.message ?? "Unknown error",
       });
     }
   };

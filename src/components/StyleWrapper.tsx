@@ -32,7 +32,7 @@ export default function StyleWrapper({ children }: StyleWrapperProps) {
   return (
     <div
       style={themeVars}
-      className="min-h-screen bg-[var(--bg)] text-[var(--text)] py-8 px-36"
+      className="min-h-screen bg-[var(--bg)] text-[var(--text)] py-8 px-62"
     >
       {children}
     </div>

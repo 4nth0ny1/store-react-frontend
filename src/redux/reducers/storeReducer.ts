@@ -1,3 +1,4 @@
+// redux/reducers/storeReducer.ts
 export type Store = {
   id: number;
   storeNumber: string;
@@ -8,42 +9,42 @@ export type Store = {
   manager: string;
 };
 
-export type StoreState = {
+type StoreState = {
   loading: boolean;
   error: string | null;
-  data: Store[];
-  selected: Store | null;
+  list: Store[]; // call it "list" to avoid stores.stores confusion
 };
 
-export type StoreAction =
+type StoreAction =
   | { type: "FETCH_STORES_REQUEST" }
-  | { type: "FETCH_STORES_SUCCESS"; payload: Store[] }
-  | { type: "FETCH_STORES_FAILURE"; payload: string };
+  | { type: "FETCH_STORES_SUCCESS"; stores: Store[] }
+  | { type: "FETCH_STORES_FAILURE"; error: string };
 
 const initialState: StoreState = {
   loading: false,
   error: null,
-  data: [],
-  selected: null,
+  list: [], // IMPORTANT: no placeholder object here
 };
 
-const storeReducer = (
+export default function storeReducer(
   state: StoreState = initialState,
   action: StoreAction
-): StoreState => {
+): StoreState {
   switch (action.type) {
     case "FETCH_STORES_REQUEST":
       return { ...state, loading: true, error: null };
 
     case "FETCH_STORES_SUCCESS":
-      return { ...state, loading: false, data: action.payload };
+      return {
+        ...state,
+        loading: false,
+        list: action.stores, // replace with fresh data
+      };
 
     case "FETCH_STORES_FAILURE":
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.error };
 
     default:
       return state;
   }
-};
-
-export default storeReducer;
+}
