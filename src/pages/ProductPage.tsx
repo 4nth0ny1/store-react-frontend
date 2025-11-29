@@ -58,7 +58,7 @@ function ProductPage({ loading, error, products, fetchProducts }: Props) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   loading: state.products.loading,
   error: state.products.error,
   products: state.products.data,

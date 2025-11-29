@@ -3,11 +3,30 @@ import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchProductById } from "../redux/reducers/actions/productActions";
 
-function ProductDetailsPage({ product, loading, error, fetchProductById }) {
-  const { id } = useParams();
+type ProductDetailsPageProps = {
+  product: any;
+  loading: boolean;
+  error: string | null;
+  fetchProductById: (id: number) => void; // guess; adjust to your real signature
+};
+
+type RouteParams = {
+  id: string;
+};
+
+function ProductDetailsPage({
+  product,
+  loading,
+  error,
+  fetchProductById,
+}: ProductDetailsPageProps) {
+  const { id } = useParams<RouteParams>();
 
   useEffect(() => {
-    fetchProductById(id);
+    if (id) {
+      const numericId = Number(id); // convert string -> number
+      fetchProductById(numericId);
+    }
   }, [id, fetchProductById]);
 
   if (loading) return <div>Loading...</div>;
@@ -31,7 +50,7 @@ function ProductDetailsPage({ product, loading, error, fetchProductById }) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   product: state.products.selected,
   loading: state.products.loading,
   error: state.products.error,
